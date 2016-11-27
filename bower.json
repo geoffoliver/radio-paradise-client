@@ -19,6 +19,9 @@
     "angular-bootstrap": "^2.3.0",
     "angular-route": "^1.5.9",
     "bootstrap": "^3.3.7",
-    "bootstrap-sass": "^3.3.7"
+    "bootstrap-sass": "^3.3.7",
+    "font-awesome": "fontawesome#^4.7.0",
+    "angular-indexedDB": "angular-indexed-db#^1.1.4",
+    "angular-cookies": "^1.5.9"
   }
 }

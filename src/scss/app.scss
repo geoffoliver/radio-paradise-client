@@ -1,1 +1,67 @@
-@import "bower_components/bootstrap-sass//assets/stylesheets/_bootstrap";
+@import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap";
+@import "bower_components/font-awesome/scss/font-awesome";
+
+.carousel-image + .carousel-image{
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid $input-border;
+}
+
+body{
+	margin: 0;
+}
+
+#player-container{
+	width: 100%;
+	height: 100vh;
+}
+
+#slideshow-background,
+#login-overlay{
+	background-size: cover;
+	width: 100%;
+	height: 100vh;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+}
+
+#player-ui{
+	position: relative;
+	z-index: 20;
+}
+
+#login-overlay{
+	@extend .text-center;
+	z-index: 30;
+	background: rgba(0, 0, 0, 0.8);
+	padding-top: 48vh;
+}
+
+.player-control{
+	@extend .fa;
+	font-size: $font-size-h1;
+}
+
+.play:after{
+	content: $fa-var-play;
+}
+
+.pause:after{
+	content: $fa-var-pause;
+}
+
+.next:after{
+	content: $fa-var-step-forward;
+}
+
+.psd:after{
+	content: $fa-var-random;
+}
+
+.toggle-slideshow:after{
+	content: $fa-var-picture-o;
+}

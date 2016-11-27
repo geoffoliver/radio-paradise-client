@@ -1,1 +1,49 @@
-{{ message }}
+<div id="player-container" ng-class="{slideshow: isSlideshowActive}">
+	<div id="slideshow-background" 
+		style="background-image: url({{ slideshowBackgroundImage }});"
+		ng-show="isSlideshowActive">
+	</div>
+	<div id="player-ui">
+		<div id="currently-playing">
+			<div id="album-art">
+				<img ng-src="{{ currentlyPlaying.cover }}">
+			</div>
+			<div id="song-info">
+				<div class="title">{{ currentlyPlaying.title }}</div>
+				<div class="artist">{{ currentlyPlaying.artist }}</div>
+			</div>
+		</div>
+		<div id="controls">
+			<ul class="list-inline">
+				<li ng-show="!state.paused">
+					<a ng-click="controller.pause()" class="player-control pause">
+						<span class="sr-only">Pause</span>
+					</a>
+				</li>
+				<li ng-show="state.paused">
+					<a ng-click="controller.play()" class="player-control play">
+						<span class="sr-only">Play</span>
+					</a>
+				</li>
+				<li>
+					<a ng-click="controller.next()" class="player-control next">
+						<span class="sr-only">Next</span>
+					</a>
+				</li>
+				<li>
+					<a ng-click="controller.playSomethingDifferent()" class="player-control psd">
+						<span class="sr-only">PSD</span>
+					</a>
+				</li>
+				<li>
+					<a ng-click="controller.toggleSlideshow()" class="player-control toggle-slideshow">
+						<span class="sr-only">Toggle</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="login-overlay" ng-show="!isLoggedIn">
+		<a class="btn btn-success btn-lg" ng-click="controller.showLogin()">Login</a>
+	</div>
+</div>
