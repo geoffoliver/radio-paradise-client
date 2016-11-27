@@ -1,0 +1,24 @@
+{
+  "name": "radio-paradise",
+  "description": "Desktop Radio Paradise client",
+  "main": "main.js",
+  "authors": [
+    "Geoff Oliver <geoff@plan8studios.com>"
+  ],
+  "license": "GPL-2.0",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "^2.3.0",
+    "angular-route": "^1.5.9",
+    "bootstrap": "^3.3.7",
+    "bootstrap-sass": "^3.3.7"
+  }
+}

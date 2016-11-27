@@ -1,0 +1,23 @@
+{
+  "name": "radio-paradise",
+  "version": "1.0.0",
+  "description": "Desktop Radio Paradise client",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "asar": "^0.12.3",
+    "electron": "^1.4.8",
+    "fs-jetpack": "^0.10.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^2.3.2",
+    "q": "^1.4.1",
+    "rcedit": "^0.7.0"
+  }
+}
