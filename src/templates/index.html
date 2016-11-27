@@ -1,16 +1,18 @@
-<div id="player-container" ng-class="{slideshow: isSlideshowActive}">
+<div id="player-container" ng-class="{slideshow: isSlideshowActive, loading: state.loading}">
 	<div id="slideshow-background" 
 		style="background-image: url({{ slideshowBackgroundImage }});"
 		ng-show="isSlideshowActive">
 	</div>
 	<div id="player-ui">
 		<div id="currently-playing">
-			<div id="album-art">
-				<img ng-src="{{ currentlyPlaying.cover }}">
-			</div>
-			<div id="song-info">
-				<div class="title">{{ currentlyPlaying.title }}</div>
-				<div class="artist">{{ currentlyPlaying.artist }}</div>
+			<div class="media">
+				<div class="media-left">
+					<img ng-src="{{ currentlyPlaying.cover }}" class="media-object">
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">{{ currentlyPlaying.title }}</h4>
+					<div class="artist">{{ currentlyPlaying.artist }}</div>
+				</div>
 			</div>
 		</div>
 		<div id="controls">
@@ -45,5 +47,8 @@
 	</div>
 	<div id="login-overlay" ng-show="!isLoggedIn">
 		<a class="btn btn-success btn-lg" ng-click="controller.showLogin()">Login</a>
+	</div>
+	<div id="loading-overlay" ng-show="state.loading">
+		<i class="fa fa-fw fa-spin fa-refresh"></i>
 	</div>
 </div>

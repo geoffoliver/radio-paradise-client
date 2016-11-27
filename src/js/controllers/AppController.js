@@ -121,6 +121,14 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 		$scope.$watch(function(){ return player.paused }, function(newVal, oldVal){
 			$scope.state.paused = newVal;
 		});
+
+		$scope.$watch(function(){ return player.canPlay }, function(newVal, oldVal){
+			if(newVal){
+				$scope.state.loading = false;
+			}else{
+				$scope.state.loading = true;
+			}
+		});
 	};
 
 	this.next = function(force){

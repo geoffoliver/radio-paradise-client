@@ -1,12 +1,6 @@
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap";
 @import "bower_components/font-awesome/scss/font-awesome";
 
-.carousel-image + .carousel-image{
-	margin-top: 10px;
-	padding-top: 10px;
-	border-top: 1px solid $input-border;
-}
-
 body{
 	margin: 0;
 }
@@ -17,7 +11,8 @@ body{
 }
 
 #slideshow-background,
-#login-overlay{
+#login-overlay,
+#loading-overlay{
 	background-size: cover;
 	width: 100%;
 	height: 100vh;
@@ -41,9 +36,30 @@ body{
 	padding-top: 48vh;
 }
 
+#loading-overlay{
+	@extend .text-center;
+	z-index: 31;
+	background: rgba(255, 255, 225, 0.8);
+	padding-top: 48vh;
+	i{
+		font-size: $font-size-h1;
+		color: $gray;
+	}
+}
+
+#currently-playing{
+	img{
+		@extend .img-responsive;
+		max-width: 150px;
+	}
+}
+
 .player-control{
 	@extend .fa;
 	font-size: $font-size-h1;
+	&:hover{
+		text-decoration: none;
+	}
 }
 
 .play:after{
