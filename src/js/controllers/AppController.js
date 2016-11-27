@@ -113,7 +113,6 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 		player = ngAudio.load($scope.currentlyPlaying.url, $scope);
 
 		player.complete(function(){
-			console.log('complete');
 			controller.next(true);
 		});
 
@@ -146,6 +145,7 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 		}
 
 		player.stop();
+		player = null;
 		controller.play();
 	};
 
