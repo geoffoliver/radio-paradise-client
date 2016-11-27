@@ -106,7 +106,7 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 		}
 
 		if(angular.equals($scope.currentlyPlaying, {})){
-			$scope.currentlyPlaying = $scope.playlist[0];
+			$scope.currentlyPlaying = angular.copy($scope.playlist[0]);
 		}
 		
 		// load the song
@@ -146,7 +146,7 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 			};
 		});
 
-		$scope.currentlyPlaying = $scope.playlist[index];
+		$scope.currentlyPlaying = angular.copy($scope.playlist[index]);
 
 		if(index >= 14){
 			this.getPlaylist();
