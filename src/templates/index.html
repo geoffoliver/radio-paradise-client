@@ -13,7 +13,7 @@
 					<h4 class="media-heading">{{ currentlyPlaying.title || 'Radio Paradise' }}</h4>
 					<div class="artist">{{ currentlyPlaying.artist || 'Listener Supported' }}</div>
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" style="width: {{ Math.round(player.progress * 100) }}%;"></div>
+						<div class="progress-bar" role="progressbar" style="width: {{ state.progress }}%;"></div>
 				</div>
 				</div>
 			</div>

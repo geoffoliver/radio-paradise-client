@@ -1,9 +1,10 @@
-app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAudioGlobals){
+app.controller('AppController', function($scope, $uibModal, $http, $interval, ngAudio, ngAudioGlobals){
 	
 	var controller = this;
 
 	var urlBase = 'https://beta.radioparadise.com';
 
+	var progressCheck = null;
 
 	ngAudioGlobals.unlock = false;
 	
@@ -23,8 +24,23 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 	// player state
 	$scope.state = {
 		loading: false,
-		paused: false
+		paused: false,
+		progress: 0
 	};
+
+	progressCheck = $interval(function(){
+		if($scope.player){
+			$scope.state.progress = ($scope.player.progress * 100).toFixed(2);
+		}
+	}, 250);
+
+	$scope.stopCheckingProgress = function(){
+		$interval.cancel(progressCheck);
+	};
+
+	$scope.$on('destroy', function(){
+		$scope.stopCheckingProgress();
+	});
 
 	this.toggleSlideshow = function(){
 		$scope.isSlideshowActive = !$scope.isSlideshowActive;
