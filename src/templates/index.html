@@ -10,8 +10,8 @@
 					<img ng-src="{{ currentlyPlaying.cover }}" class="media-object">
 				</div>
 				<div class="media-body">
-					<h4 class="media-heading">{{ currentlyPlaying.title }}</h4>
-					<div class="artist">{{ currentlyPlaying.artist }}</div>
+					<h4 class="media-heading">{{ currentlyPlaying.title || 'Radio Paradise' }}</h4>
+					<div class="artist">{{ currentlyPlaying.artist || 'Listener Supported' }}</div>
 				</div>
 			</div>
 		</div>
@@ -43,6 +43,7 @@
 					</a>
 				</li>
 			</ul>
+			<input type="range" ng-model="player.volume" min="0" max="1" step="0.1">
 		</div>
 	</div>
 	<div id="login-overlay" ng-show="!isLoggedIn">

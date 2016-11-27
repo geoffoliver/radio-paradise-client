@@ -4,7 +4,6 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 
 	var urlBase = 'https://beta.radioparadise.com';
 
-	var player = false;
 
 	ngAudioGlobals.unlock = false;
 	
@@ -17,6 +16,7 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 	$scope.slideshowBackgroundImage = urlBase+'/graphics/tv_img/11612.jpg';
 	
 	// music
+	$scope.player = false;
 	$scope.playlist = [];
 	$scope.currentlyPlaying = {};
 
@@ -91,7 +91,7 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 	}
 
 	this.pause = function(){
-		player.pause();
+		$scope.player.pause();
 	};
 
 	this.play = function(){
@@ -100,8 +100,8 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 			return;
 		}
 
-		if(player && player.paused){
-			player.play();
+		if($scope.player && $scope.player.paused){
+			$scope.player.play();
 			return;
 		}
 
@@ -109,20 +109,25 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 			$scope.currentlyPlaying = angular.copy($scope.playlist[0]);
 		}
 		
-		// load the song
-		player = ngAudio.load($scope.currentlyPlaying.url, $scope);
+		if($scope.currentlyPlaying.url.indexOf('http') !== 0){
+			controller.next();
+			return;
+		}
 
-		player.complete(function(){
+		// load the song
+		$scope.player = ngAudio.load($scope.currentlyPlaying.url, $scope);
+
+		$scope.player.complete(function(){
 			controller.next(true);
 		});
 
-		player.play();
+		$scope.player.play();
 
-		$scope.$watch(function(){ return player.paused }, function(newVal, oldVal){
+		$scope.$watch(function(){ return $scope.player.paused }, function(newVal, oldVal){
 			$scope.state.paused = newVal;
 		});
 
-		$scope.$watch(function(){ return player.canPlay }, function(newVal, oldVal){
+		$scope.$watch(function(){ return $scope.player.canPlay }, function(newVal, oldVal){
 			if(newVal){
 				$scope.state.loading = false;
 			}else{
@@ -152,8 +157,11 @@ app.controller('AppController', function($scope, $uibModal, $http, ngAudio, ngAu
 			this.getPlaylist();
 		}
 
-		player.stop();
-		player = null;
+		if($scope.player){
+			$scope.player.stop();
+			$scope.player = null;
+		}
+
 		controller.play();
 	};
 
