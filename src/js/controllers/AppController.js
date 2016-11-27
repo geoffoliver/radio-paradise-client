@@ -32,7 +32,7 @@ app.controller('AppController', function($scope, $uibModal, $http, $interval, ng
 		if($scope.player){
 			$scope.state.progress = ($scope.player.progress * 100).toFixed(2);
 		}
-	}, 250);
+	}, 500);
 
 	$scope.stopCheckingProgress = function(){
 		$interval.cancel(progressCheck);
