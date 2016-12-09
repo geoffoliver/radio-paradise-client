@@ -12,11 +12,17 @@
 				<div class="media-body">
 					<h4 class="media-heading">{{ currentlyPlaying.title || 'Radio Paradise' }}</h4>
 					<div class="artist">{{ currentlyPlaying.artist || 'Listener Supported' }}</div>
-					<div class="progress">
-						<div class="progress-bar" role="progressbar" style="width: {{ state.progress }}%;"></div>
-				</div>
+					<div id="volume-control">
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" style="width: {{ (player.volume * 100) }}%;"></div>
+						</div>
+						<input type="range" ng-model="player.volume" min="0" max="1" step="0.1">
+					</div>
 				</div>
 			</div>
+		</div>
+		<div class="progress">
+			<div class="progress-handle" style="left: {{ state.progress }}%"></div>
 		</div>
 		<div id="controls">
 			<ul class="list-inline">
@@ -40,13 +46,21 @@
 						<span class="sr-only">PSD</span>
 					</a>
 				</li>
+				<!--
 				<li>
 					<a ng-click="controller.toggleSlideshow()" class="player-control toggle-slideshow">
 						<span class="sr-only">Toggle</span>
 					</a>
 				</li>
+				-->
+				<li ng-show="!state.paused && currentlyPlaying.type == 'M'">
+					<a uib-popover-template="'rate-song.html'" popover-is-open="ratingSong" popover-title="Rate Song" class="player-control rate-song">
+						<span class="badge" ng-if="currentlyPlaying.rating > 0">
+							{{ currentlyPlaying.rating }}
+						</span>
+					</a>
+				</li>
 			</ul>
-			<input type="range" ng-model="player.volume" min="0" max="1" step="0.1">
 		</div>
 	</div>
 	<div id="login-overlay" ng-show="!isLoggedIn">
@@ -55,4 +69,16 @@
 	<div id="loading-overlay" ng-show="state.loading">
 		<i class="fa fa-fw fa-spin fa-refresh"></i>
 	</div>
+	<script type="text/ng-template" id="rate-song.html">
+		<div class="btn-group">
+				<a class="btn btn-xs btn-default" 
+					ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]"
+					ng-click="controller.rateSong(i)" 
+					ng-class="{current: currentlyPlaying.rating == i}"
+				>
+					{{ i }}
+				</a>
+			</li>
+		</ul>
+	</script>
 </div>

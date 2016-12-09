@@ -26,7 +26,6 @@ gulp.task('scripts', function(){
 		'bower_components/angular-route/angular-route.js',
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 		'bower_components/angular-audio/app/angular.audio.js',
-		'bower_components/angular-indexedDB/angular-indexed-db.js',
 		'bower_components/angular-cookies/angular-cookies.js',
 		'src/js/**/*'
 	]).pipe(babel({

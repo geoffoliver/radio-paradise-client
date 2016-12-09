@@ -1,11 +1,12 @@
 'use strict';
 
-let _templateBase = './dist/templates';
+let _templateBase = '/dist/templates';
 
 let app = angular.module('app', [
 	'ngRoute',
 	'ui.bootstrap',
-	'ngAudio'
+	'ngAudio',
+	'ngCookies'
 ]);
 
 app.config(($routeProvider, $httpProvider) => {
@@ -18,5 +19,7 @@ app.config(($routeProvider, $httpProvider) => {
 	$routeProvider.otherwise({ redirectTo: '/' });
 
 	$httpProvider.defaults.withCredentials = true;
+
+	$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 });

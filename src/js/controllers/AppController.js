@@ -1,20 +1,32 @@
-app.controller('AppController', function($scope, $uibModal, $http, $interval, ngAudio, ngAudioGlobals){
-	
+app.controller('AppController', function($scope, $uibModal, $http, $interval, $timeout, $cookies, ngAudio, ngAudioGlobals){
+
 	var controller = this;
 
-	var urlBase = 'https://beta.radioparadise.com';
+	var proxyScript = '/rp-proxy.php';
+	var rpUrlBase = 'https://beta.radioparadise.com/';
 
 	var progressCheck = null;
 
 	ngAudioGlobals.unlock = false;
+
+	$scope.ratingSong = false;
 	
 	// user info
-	$scope.user = {};
-	$scope.isLoggedIn = false;
+	$scope.user = {
+		id: $cookies.get('C_user_id'),
+		username: $cookies.get('C_username'),
+		hash: $cookies.get('C_passwd')
+	};
+
+	$scope.isLoggedIn = (
+		$scope.user.id && 
+		$scope.user.username && 
+		$scope.user.hash
+	);
 
 	// slideshow
 	$scope.isSlideshowActive = false;
-	$scope.slideshowBackgroundImage = urlBase+'/graphics/tv_img/11612.jpg';
+	$scope.slideshowBackgroundImage = rpUrlBase+'/graphics/tv_img/11612.jpg';
 	
 	// music
 	$scope.player = false;
@@ -46,20 +58,48 @@ app.controller('AppController', function($scope, $uibModal, $http, $interval, ng
 		$scope.isSlideshowActive = !$scope.isSlideshowActive;
 	};
 
+	var makeProxyData = function(action, data){
+		var url = rpUrlBase + action;
+
+		if(!angular.isUndefined(data)){
+			if(angular.isObject(data)){
+				url+='?';
+				angular.forEach(data, function(key, val){
+					url+='&'+val+'='+key;
+				});
+			}
+		}
+
+		return {
+			params: {
+				url: url,
+				send_cookies: '1',
+				mode: 'native'
+			}
+		};
+	}
+
 	var login = function(credentials){
-		$http.get(urlBase + '/ajax_login.php', {params: credentials}).then(function(resp){
+		var data = makeProxyData('ajax_login.php', credentials);
+
+		$http.get(proxyScript, data).then(function(resp){
 			if(resp.data.indexOf('invalid login') === 0){
 				alert('invalid login!');
 				return;
 			}
 
-			var userParts = resp.data.split('|');
-
+			var userParts = resp.data.trim().split('|');
+			console.log(userParts);
 			$scope.user = {
 				id: userParts[2],
 				username: userParts[0],
 				hash: userParts[1],
-			}
+			};
+
+			$cookies.put('C_username', $scope.user.username);
+			$cookies.put('C_passwd', $scope.user.hash);
+			$cookies.put('C_user_id', $scope.user.id);
+			$cookies.put('C_bitrate', '1');
 
 			$scope.isLoggedIn = true;
 
@@ -95,7 +135,11 @@ app.controller('AppController', function($scope, $uibModal, $http, $interval, ng
 	};
 	
 	this.getPlaylist = function(){
-		$http.get(urlBase + '/papi_playlist', {offset: 0, num: 15}).then(function(resp){
+		var data = makeProxyData('papi_playlist', {
+			offset: 0,
+			num: 15
+		});
+		$http.get(proxyScript, data).then(function(resp){
 			if(resp.status === 200 && angular.isArray(resp.data)){
 				$scope.playlist = $scope.playlist.concat(resp.data).splice(-30);
 
@@ -146,6 +190,9 @@ app.controller('AppController', function($scope, $uibModal, $http, $interval, ng
 		$scope.$watch(function(){ return $scope.player.canPlay }, function(newVal, oldVal){
 			if(newVal){
 				$scope.state.loading = false;
+				if($scope.currentlyPlaying.cue > 0){
+					$scope.player.setCurrentTime($scope.currentlyPlaying.cue / 1000);
+				}
 			}else{
 				$scope.state.loading = true;
 			}
@@ -181,13 +228,28 @@ app.controller('AppController', function($scope, $uibModal, $http, $interval, ng
 		controller.play();
 	};
 
-	this.rate = function(){
+	this.rateSong = function(rating){
+		$scope.ratingSong = false;
+		$scope.currentlyPlaying.rating = rating;
 
+		var data = makeProxyData('ajax_rp3_rating.php', {
+			song_id: $scope.currentlyPlaying.song_id,
+			rating: rating
+		});
+		
+		$http.get(proxyScript, data).then(function(resp){
+			if(resp.status !== 200){
+				$scope.currentlyPlaying.rating = 0;
+			}
+		});
 	};
 
 	this.playSomethingDifferent = function(){
 
 	};
 
+	if($scope.isLoggedIn){
+		this.getPlaylist();
+	}
 
 });
